@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+
+<head style="background-color: darkolivegreen;">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>IIS Windows Server</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+        <!--
+        -->
+        img
+        {
+        filter:
+        brightness(60%);
+        }
+    </style>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        * {
+  box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+.col-50{
+    float:left;
+    width:50%;
+    
+    margin-top:6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(231, 217, 217);
+}
+li {
+            float: left;
+}
+li a {
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-weight: bold;
+}
+li a:hover {
+            background-color: #04AA6D;
+        }
+
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+        </style>
+</head>
+
+<body>
+    <ul>
+        <li > <a class="active" href="/main">HOME</a></li>
+        <li > <a class="active" href="/">SIGN OUT</a></li>
+    </ul>
+    <div class="col-md-3">
+    <div style="font-size: large;"><%= T_reg.fullname%></div>
+    <div style="font-size: medium;"><%= T_reg.dept%></div><br><br>  
+        <form id="formMain">
+                <p style="font-style: oblique;">The select element defines a drop-down list:</p>
+                <label for="Forms">Choose Form:</label>
+                <select id="Forms" name="Forms" onchange="handleFormOnChange(selectedIndex)">
+              
+                    <option value="">Choose Form ...</option>
+                    <option value="Overtime">Overtime</option>
+                    <option value="Leave">Leave</option>
+                    <option value="Order">Order</option>
+                    <option value="Bill Release Notice">Bill Release Notice</option>
+                    <option value="Unmanifest Charges Control">Unmanifest Charges Control</option>
+                    <option value="Checking Sheet">Checking Sheet</option>
+                    <option value="BLInfo">BLInfo</option>
+                    <option value="Payment Management">Payment Management</option>
+                    <option value="Container DO">Container DO</option>
+                    <option value="Equipment Control">Equipment Control</option>
+                    <option value="MNR">MNR</option>
+                    <option value="Container Deposit">Container Deposit</option>
+                    <option value="Seal Deposit">Seal Deposit</option>
+                    <option value="Upload file">Upload file</option>
+                    <option value="Request for Approval">Request for Approval</option>
+                </select>
+
+                <br>
+                <label for="role">Role:</label>
+                <select id="role" name="role" onchange="handleRoleOnChange(selectedIndex)">
+                    <option value="As a User">As a User</option>
+                    <option hidden="true" id="_asRole5Form" value="As a Supervisor">As a Supervisor</option>
+                    <option hidden="true" id="_asRole4Form" value="As a Personnel">As a Personnel</option>                    
+                </select>
+
+                <br>
+                <label for="Tasks">Tasks:</label>
+                <select id="Tasks" name="Tasks">
+                    <option value="Application">Application</option>
+                    <option value="Change Password">Change Password</option>
+                    <option value="Registration">Registration</option>
+                    <option value="Seq No. Setting">Seq No. Setting</option>
+                    <option value="Code Control">Code Control</option>
+                    <option value="Supplies">Supplies</option>
+                    <option value="Positions">Positions</option>
+                    <option value="Send Email">Send Email</option>
+                </select>
+                <br>
+                <br>
+                <input type="submit">
+            </form>
+        </div>
+    
+       
+
+        <script>
+            var _role = Number.parseInt(`<%=T_reg.role%>`);
+            let _tmpRoleForm =0;
+            if(_role==5||_role==3||_role==2) document.getElementById("_asRole5Form").hidden=false;
+            if(_role==4) {
+                document.getElementById("_asRole5Form").hidden=false;
+                document.getElementById("_asRole4Form").hidden=false;
+            }
+            function handleRoleOnChange(_selected){
+                switch(_selected){
+                    case 0:    
+                    console.log("case role 0");
+                    handleFormOnChange(0);                   
+                        break;
+                    case 1:
+                    console.log("case role 5");
+
+                        _tmpRoleForm=5;
+                        handleFormOnChange(0);                   
+
+                        break;
+                    case 2:
+                    console.log("case role 4");
+
+                        _tmpRoleForm=4;
+                        handleFormOnChange(0);                   
+
+                        break;
+                }
+
+            }
+
+            //handle change form when choose role(as a supervisor,personnel,user) and  form;
+            function handleFormOnChange(_selected){                
+                var user = `<%=data%>`;  
+
+                switch(_selected){
+                    case 0:
+                    console.log("case form 0");
+
+                    document.getElementById("Forms").selectedIndex=0;
+                        break;
+                    case 1: //OT Form
+                    //handle Role    
+                    console.log(user);
+                    console.log("case form 1");
+                    console.log("_tmpRoleForm: "+_tmpRoleForm);
+
+                    
+                    if(_tmpRoleForm==0){   
+                                     
+                                 window.location.href=`/OT/${user}`; 
+                    }
+                    if(_tmpRoleForm==5){
+                                     window.location.href=`/OTConfirm/${user}`;
+                    }
+                    if(_tmpRoleForm==4){
+                                     console.log("tmporoleform :"+_tmpRoleForm);
+                                     window.location.href=`/OTConfirmAll/${user}`;
+                    }
+                        break;
+                    case 2:  // Leave Form   
+                    //handle Role    
+                    if(_tmpRoleForm==0){   
+                                     
+                        window.location.href=`/leave/${user}`; 
+                    }
+                    if(_tmpRoleForm==5){
+                        window.location.href=`/leaveConfirm/${user}`;
+                    }
+                    if(_tmpRoleForm==4){
+                        console.log("tmporoleform :"+_tmpRoleForm);
+                        window.location.href=`/leaveConfirmAll/${user}`;
+                    }
+                        break;
+                    case 3:
+                    if(_tmpRoleForm==0){
+                      window.location.href=`/Order/${user}`; 
+
+                    }
+                    if(_tmpRoleForm==5){
+                      window.location.href=`/leave/${user}`; 
+                      
+                    }
+                    if(_tmpRoleForm==4){
+                      window.location.href=`/leave/${user}`; 
+                      
+                    }
+                }
+            }
+        </script>
+        
+</body>
+
+</html>

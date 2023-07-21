@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {background-color: coral;}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+</style>
+</head>
+<body>
+
+<ul>
+  <li><a class="active" href="#home">Home</a></li>
+  <li><a href="#news">News</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#about">About</a></li>
+</ul>
+
+
+
+<table>
+  <tr>
+    <th>refno</th>
+    <th>pic</th>
+    <th>kind</th>
+    <th>from</th>
+    <th>to</th>
+    <th>days</th>
+  </tr>
+  <% for(let i=0;i < dataUser.length;i++){ %>
+  <tr>
+    <td style="text-justify: auto">
+      <%= dataUser[i].refno %>
+    </td>
+    <td>
+      <%= dataUser[i].pic %>
+    </td>
+    <td>
+      <%var tmp = ''; %>
+     <% if(dataUser[i].kind=='al'){ %>
+      <% tmp= 'annual leave' } else tmp='unpaid leave';             %>
+      <%=tmp            %>
+
+    </td> 
+    <td>
+      <%= dataUser[i].fromdate %>
+    </td>    
+    <td>
+      <%= dataUser[i].todate %>
+    </td>   
+    <td>
+      <%= dataUser[i].days %>
+    </td>   
+    
+  </tr>
+  <% } %>
+  
+</table>
+
+</body>
+</html>
+
+

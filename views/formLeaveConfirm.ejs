@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <style>
+        /* table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: coral;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(122, 88, 88);
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        } */
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <ul class="navbar">
+   
+        <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/main"> Home</a></li>
+     
+      
+        <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/leave/addnew"> Add</a></li>
+     
+    </ul>
+    <!-- <ul>
+  <li><a class="active" href="#home">Home</a></li>
+  <li><a href="#news">News</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#about">About</a></li>
+</ul> -->
+
+
+
+    <table class="table-hover table-dark table">
+        <tr>
+            <th>Action</th>
+
+            <th>Refno</th>
+            <th>Request Person</th>
+            <th>Kind</th>
+            <th>From </th>
+            <th>To </th>
+            <th>Days</th>
+            <th>Time Range</th>
+            <th>Substitute</th>
+            <th>Reason</th>
+            <th>Request Day</th>
+
+        </tr>
+        <% for(let i=0;i < dataUser.length;i++){ %>
+            <tr>
+                <td><button class="handleLr">
+                        Confirm
+                    </button>
+                </td>
+
+                <td style="text-justify: auto" class="refno">
+                    <%=dataUser[i].refno%>
+                </td>
+                <td>
+                    <%= dataUser[i].pic %>
+                </td>
+                <td>
+                    <%var tmp='' ; %>
+                        <% if(dataUser[i].kind=='ul' ){ %>
+                            <% tmp='Unpaid Leave' } else if(dataUser[i].kind=='al' ){ %>
+                                <% tmp='Annual Leave' } else if(dataUser[i].kind=='wl' ){ %>
+                                    <% tmp='Welfare Leave' } else if(dataUser[i].kind=='cl' ){ %>
+                                        <% tmp='Compensatory Leave' } else {tmp='Business Leave' } %>
+                                            <%=tmp %>
+                </td>
+                <td>
+                    <%= dataUser[i].fromdate.getDate() %> - <%= dataUser[i].fromdate.getMonth() + 1 %> - <%=
+                                dataUser[i].fromdate.getFullYear() %>
+                </td>
+                <td>
+                    <%= dataUser[i].todate.getDate() %> - <%= dataUser[i].todate.getMonth() + 1 %> - <%=
+                                dataUser[i].todate.getFullYear() %>
+
+                </td>
+                <td>
+                    <%= dataUser[i].days %>
+
+                </td>
+                <td>
+                    <%= dataUser[i].timerange %>
+
+                </td>
+                <td>
+                    <%= dataUser[i].substitute %>
+
+                </td>
+                <td>
+                    <%= dataUser[i].note %>
+                </td>
+                <td>
+                    <%= dataUser[i].reqdate.getDate() %> - <%= dataUser[i].reqdate.getMonth() + 1 %> - <%=
+                                dataUser[i].reqdate.getFullYear() %>
+
+                </td>
+
+            </tr>
+            <% } %>
+
+    </table>
+   <!-- Handle confirm LR from TeamLeader -->
+     <script> 
+     
+  $(".handleLr").click(async function() {
+    var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+                       .find(".refno")     // Gets a descendent with class="nr"
+                       .text();       // Retrieves the text within <td>
+    var lrrefno= $item;
+    
+    
+    
+    window.location.href = `/leave/notify/LeaveConfirm/${lrrefno}`;
+                        
+     // Outputs the answer
+});
+</script>
+
+</body>
+
+</html>

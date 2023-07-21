@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<style>
+  input[type=submit]:hover {
+  background-color: #45a049;
+}
+</style>
+</head>
+<body>
+  <ul class="navbar navbar-expand-lg bg-light" style="background-color:rgb(231, 217, 217)">   
+      <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/main"> HOME</a></li>
+      <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/OT/formNewOT"> ADD</a></li>
+      <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/"> SIGN OUT </a></li>
+  </ul>
+  <div class="container">
+    <form action="/OT/details/update" method="post" onsubmit="return checkSubmit()" required>
+        <input hidden="true" name="_refno" value="<%=data.refno%>">
+    <div class="row">
+<div class="col-1"> 
+</div> 
+<div class="col-10" style="background-color:rgb(231, 217, 217)">
+    <h3 style="text-align: center;">Application for Overtime </h3>
+    <!-- <div class="row">
+        <div class="col-3">
+            <label>Approved:</label>
+        </div>
+        <div class="col-9">
+            <div class="row">
+            <div class="col-3">
+                <label>Personnel</label>
+            </div>
+            <div class="col-8">
+                <input type="text" class="form-control" >
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label>Supervisor</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control">
+                </div>
+                </div>
+        </div>
+    </div> -->
+    <hr>
+    <div class="row">        
+            <div class="col-3">
+                <label>Applicant:</label>
+            </div>
+            <div class="col-9"><%=fullName%></div>        
+            <div class="col-12">
+                <br>
+            </div>
+            <div class="col-3">
+                <label>Date:</label>
+            </div>
+            <div class="col-9" id="doDate"><%=data.dodate%></div>
+            <div class="col-12">
+                <br>
+            </div>
+        <!-- block Kind of OT time -->
+        <input hidden="true" id="kindOT" value="<%=data.kind%>">
+       
+            <div class="col-3">               
+            </div>
+            <div class="col-9">
+                <input type="radio" name="radiokind" id="kindNormal" value="0">
+                Overtime on normal day
+            </div>
+            <div class="col-3">               
+            </div>
+            <div class="col-9">
+                <input type="radio" name="radiokind" id="kindSaturday" value="1">
+                Overtime on Saturday
+            </div>            
+            <div class="col-3">               
+            </div>
+            <div class="col-9">
+                <input type="radio" name="radiokind" id="kindHolidays" value="1">
+                Overtime on Holidays
+            </div>
+            <div class="col-12">
+                <br>
+            </div>
+            <script>
+                let  _kind = document.getElementById("kindOT").value;
+                let _date = new Date(document.getElementById("doDate").textContent);
+                let _day = _date.getDay();
+                if(_kind=='false') {
+                    
+                    document.getElementById("kindNormal").checked=true;
+                }
+                if(_kind=='true'){
+                   
+                    if(_day==6) document.getElementById("kindSaturday").checked=true;
+                    else document.getElementById("kindHolidays").checked=true;
+
+                }   
+            </script>            
+        <!-- block From time -->            
+                <div class="col-3">
+                    <label>From:</label>
+                </div>
+                <div class="col-3">
+                    <input id="fromH" name="fromHours" class="form-control" type="text" value="<%=data.fromhr%>">
+                </div>
+                <div class="col-2">Hr(s)</div>
+                <div class="col-3">
+                    <input id="fromM" name ="fromMins" class="form-control" type="text" value="<%=data.frommin%>">
+                </div>
+                <div class="col-1">min(s)</div>
+                <div class="col-12">
+                    <br>
+                </div>
+        <!-- block TO time -->
+                <div class="col-3">
+                    <label>To:</label>
+                </div>
+                <div class="col-3">
+                    <input id="toH" name="toHours" class="form-control" type="text" value="<%=data.tohr%>" >
+                </div>
+                <div class="col-2" style="float: left;">Hr(s)</div>
+                <div class="col-3">
+                    <input id="toM" name="toMins" class="form-control" type="text" value="<%=data.tomin%>">
+                </div>
+                <div class="col-1" style="float: left;">min(s)</div>
+                <div class="col-12">
+                    <br>
+                </div>
+        <!-- block description -->
+                <div class="col-3">
+                    <label>Description:</label>
+                </div>
+                <div class="col-8">
+                    <input id="descriptions" name="descriptions" type="text" class="form-control" value="<%=data.desp%>">
+                </div>
+                <div class="col-1"></div>
+        <!-- button submit -->
+        <div class="col-12">
+            <br>
+        </div>
+                <div class="col-11" >
+                    <input  type="submit" style="float: right;background-color: #04AA6D;color:white;padding: 12px 20px;border: none;border-radius: 4px;cursor: pointer;" >
+                    </div>
+                <div class="col-1"></div>
+                
+
+        
+    
+
+    
+</div>
+
+
+</div> 
+<div class="col-1">
+</div> 
+</div> 
+</form>  
+<script>
+    // try{
+  
+// }
+// catch(err){
+//     alert("err: "+err);
+// }  
+    function checkSubmit(){
+    let fromH = Number.parseInt(document.getElementById("fromH").value);
+    let fromM = Number.parseInt(document.getElementById("fromM").value);
+    let toH = Number.parseInt(document.getElementById("toH").value);
+    let toM = Number.parseInt(document.getElementById("toM").value);
+    let _Desp = document.getElementById("descriptions").value;
+    if(isNaN(fromH)||isNaN(fromM)||isNaN(toH)||isNaN(toM))
+    {   
+        alert("error!")
+        return false;
+    }
+        if(fromH>toH){
+            alert("Wrong Time!");
+            console.log("wrong hour");
+            return false;
+        }
+        if(fromH==toH&&fromM>=toM)
+        {
+            alert("Wrong Time!");
+            console.log("wrong min");
+
+            return false;
+        }
+        if(_Desp==""||_Desp==undefined){
+            alert("Description empty!");
+            console.log("empty");
+            return false;
+        }
+    }
+  
+</script> 
+</body>
+</html>
+
+

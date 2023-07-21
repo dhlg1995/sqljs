@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #04AA6D;
+  justify-content: center;
+  display: flex;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+ 
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+.col-10 {
+  float: left;
+  width: 10%;
+  margin-top: 6px;
+}
+
+.col-17 {
+  float: left;
+  width: 17%;
+  margin-top: 6px;
+}
+.col-15 {
+  float: left;
+  width: 15%;
+  margin-top: 6px;
+}
+.col-30 {
+  float: left;
+  width: 30%;
+  margin-top: 6px;
+}
+.col-50{
+    float:left;
+    width:50%;
+    
+    margin-top:6px;
+}
+.col-45{
+    float:left;
+    width:45%;
+    
+    margin-top:6px;
+}
+.col-45btn{    
+    width:45%;
+    align-items: center;
+    
+    margin-top:6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+.col-100{
+  float: left;
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(231, 217, 217);
+}
+li {
+            float: left;
+}
+
+li a {
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 14px 16px;
+            
+            text-decoration: none;
+            font-weight: bold;
+}
+li a:hover {
+            background-color:#04AA6D;
+        }
+
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-10, .col-17, .col-30, .col-15, .col-45, .col-75, .col-45btn, .col-100 input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body >
+  <ul>
+    
+      <li> <a class="active" href="/main"> Home</a></li>
+      <li> <a class="active" href="/"> Sign Out</a></li>
+
+    
+  </ul>
+
+<h2>Application for Leave
+</h2>
+
+<h4>
+    <%=_userFullName%>
+</h4>
+
+<div class="containter">
+  <div class="row">
+  <div class="col-1"></div>
+<div class="col-10" style="background-color: floralwhite;">
+  <form action="/leave/insertLeave" method="post" id="thisForm" onsubmit="return functionCheckError()" required>
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Date" >Date</label></b>
+    </div>
+    <div class="col-25" >
+        <b><label  id ="dateTime"  value="<%=dt%>"><%=dt%></label> </b>  
+        <input name="reqDateTime" value="<%=dt%>" hidden="true">
+    </div>
+  </div>
+ 
+
+  <!-- applicant block -->
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Applicant">Applicant</label></b>
+    </div>
+    <div class="col-75">
+      <div class="col-30">
+      <select id="Applicant" name="applicant" onchange="handleApplicantChange()"> 
+        <option value = "Select">Select</option>       
+        <% for(let i=0;i < data.length;i++){ %>            
+        <option value='<%=data[i].days%>|<%=data[i].daysUL%> '><%=data[i].fullname%> </option>  
+        <%}%>          
+      </select>
+    </div>  
+  </div>
+    <script>
+        function handleApplicantChange(){
+            //show day remain after choose applicant person
+        var e = document.getElementById("Applicant");
+        var value = e.value;
+        var z =value.split("|");   
+        var  _Var = document.getElementById("Kind Of Leave");
+        handleKindOfLeave(0);
+        _Var.selectedIndex=0;
+       
+        // logic of applicant and acting person
+        var text = e.options[e.selectedIndex].text;       
+        var usertext = '<%=_userFullName%>';        
+        const select = document.getElementById('Acting Person');
+        if(text!=usertext){          
+            select.value = usertext;
+            select.disabled=true;           
+            }
+        if(text==usertext){
+            select.disabled=false;
+            }
+             //set value for tmp
+        var _tmp = document.getElementById("tmp");
+        _tmp.value=text;
+       
+        }
+    </script>
+  </div>
+
+<!-- acting person block -->
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Acting Person">Acting Person</label></b>
+    </div>
+    <div class="col-75">
+      <div class="col-30">
+        <select id="Acting Person" name="actingPerson">  
+            <option value="Select" >Select</option>      
+            <% for(let i=0;i < data.length;i++){ %>            
+            <option value="<%=data[i].fullname%>" ><%=data[i].fullname%> </option>
+                <% }%>
+          </select>
+    </div>
+   </div>
+  </div>
+
+  <!-- kind of leave block -->
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Kind Of Leave">Kind Of Leave</label></b>
+    </div>
+    <div class="col-75">
+    <div class="col-30" >
+        <input hidden="true" id="kindOfLeaveGetValue" value="Select">
+        <select id="Kind Of Leave"  name="kindOfLeave" onchange="handleKindOfLeave(selectedIndex)">
+            <option value="Select" >Select</option>
+            <option id="al" value="al">Annual Leave</option>
+            <option id="ul" value="ul">Unpaid Leave</option>
+            <option id="wl" value="wl">Welfare Leave</option>
+            <option id="bl" value="bl">Business Leave</option>
+            <option id="cl" value="cl">Compensatory Leave</option>
+        </select>      
+    </div>   
+  </div>
+    
+    <script>
+        function handleKindOfLeave(_select){
+            try{
+             
+                var a=document.getElementById("Applicant").value;
+                var b=a.split("|");
+                if(_select==0){
+                        document.getElementById("dayremain").innerHTML='';  
+                        document.getElementById("kindOfLeaveGetValue").value='Select';
+                        document.getElementById("dayremainvalue").value='';
+
+                }
+                    if(_select==2){
+                        document.getElementById("dayremain").innerHTML=b[1];  
+                        document.getElementById("kindOfLeaveGetValue").value='ul';
+                        document.getElementById("dayremainvalue").value=b[1];
+
+                }
+                if(_select==1){
+                    document.getElementById("dayremain").innerHTML=b[0]; 
+                    document.getElementById("kindOfLeaveGetValue").value='al';
+                    document.getElementById("dayremainvalue").value=b[0];
+
+                }
+                if(_select==3){
+                    document.getElementById("dayremain").innerHTML=''; 
+                    document.getElementById("kindOfLeaveGetValue").value='wl';
+                    document.getElementById("dayremainvalue").value=9999;
+
+
+                }
+                if(_select==4){
+                    document.getElementById("dayremain").innerHTML=''; 
+                    document.getElementById("kindOfLeaveGetValue").value='bl';
+                    document.getElementById("dayremainvalue").value=9999;
+
+                }
+                if(_select==5){
+                    document.getElementById("dayremain").innerHTML=''; 
+                    document.getElementById("kindOfLeaveGetValue").value='cl';
+                    document.getElementById("dayremainvalue").value=9999;
+                }
+               
+               
+
+            }
+            catch{
+
+            }
+            
+        }
+    </script>
+  </div>
+<!-- day remainning block-->
+<div class="row">
+  <div class="col-25" >
+    <b><label > Days Remaining:</label></b>
+ </div>
+ <div class="col-25">
+     <b><label id="dayremain" style="height: 42px;vertical-align: middle;text-align: center;"></label></b>
+     <input hidden="true" id="dayremainvalue" value="">
+ </div>
+
+</div>
+
+<!-- beginning date block -->
+    <div class="row">
+    <div class="col-25">
+      <b><label for="Beginning Date">Beginning Date</label></b> 
+    </div>
+    <div class="col-75">
+    <div class="col-25" style="width: auto;height: auto;">
+      <input style="width: 292px;height: 43px;" type="date" id="Beginning Date" value="" name="beginningDate" style="width: 150px;height: 24px;"  >
+    </div>
+  </div>
+</div>
+
+<!-- ending date block -->
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Ending Date">Ending Date</label></b>
+    </div>
+    <div class="col-25" >
+      <input style="width: 292px;height: 43px;"  type="date" id="Ending Date" value="" name="endingDate" style="width: 150px;height: 24px;"  >
+    </div>
+  </div>
+
+  <!-- day hour block -->
+<div class="row">
+    <div class="col-25">
+      <b><label for="Days">Days</label></b>
+    </div>
+    <div class="col-75">
+    <div  class="col-15">
+      <select  id="DayOrHour" name="DayOrHour" onchange="DayHourFunction(selectedIndex)">
+        <option value="Days">Day</option>
+        <option value="Hours">Hours</option>
+      </select>
+    </div>
+    <div class="col-15">
+        <select id="DayOrHourValue" name="DayOrHourValue" onchange="handleDayHourChange(selectedIndex)">
+            <option id="dHDay" >Days</option>
+            <option id="dH1s" >1Hrs</option>
+            <option id="dH2s" >2Hrs</option>
+            <option id="dH3s" >3Hrs</option>
+
+            <!-- xu ly phan ngay gio tren giao dien ejs -->
+
+            <script >
+                function DayHourFunction(_selectedIndex){
+                    var _dHDays =document.getElementById("dHDay");
+                    var _dHH1s= document.getElementById("dH1s");
+                    var _dHH2s= document.getElementById("dH2s");
+                    var _dHH3s= document.getElementById("dH3s");
+                    if(_selectedIndex==0){
+                        _dHDays.hidden=false
+                        _dHH1s.hidden=true;
+                        _dHH2s.hidden=true;
+                        _dHH3s.hidden=true;
+                    }else if(_selectedIndex==1){
+                        _dHDays.hidden=true;
+                        _dHH1s.hidden=false;
+                        _dHH2s.hidden=false;
+                        _dHH3s.hidden=false;
+                    }
+                    }
+                    function handleDayHourChange(_text){
+                        var temp =document.getElementById("_DayorHourValue");
+                            switch(_text){
+                            case 0:
+                                temp.value=1;
+                                break;
+                            case 1:
+                                temp.value=0.125;
+                                break;
+                            case 2:
+                                temp.value=0.25;
+                                break;
+                            case 3:
+                                temp.value=0.375;
+                                break;
+
+                            }
+                    }
+            </script>
+        </select>       
+    </div>
+    <div class="col-15">
+        <input type="text"  value=""  id="_DayorHourValue" name="dayHourvalue" >
+    </div>
+  </div>
+</div>
+ 
+<!-- time range block -->
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Time Range">Time Range</label></b>
+    </div>
+    <div class="col-75">
+    <div class="col-15">
+        <select onchange="handleTimeRange(selectedIndex)">
+            <option>Full Time</option>
+            <option>Hourly</option>
+        </select>
+    </div>   
+    <div class="col-30">
+      <input type="text" id="Time Range" name="timeRange" value="8:00-17:00">
+    </div>
+  </div>
+    <script>
+        var tmptimerange =document.getElementById("Time Range")
+        function handleTimeRange(_select){
+            if(_select==0){
+                tmptimerange.value='8:00-17:00';
+            }
+            if(_select==1){
+                tmptimerange.value='8:00-9:00';
+            }
+
+        }
+    </script>    
+  </div>
+
+  <!-- create empty input to handle applicant person name (a way to handle issue) -->
+  <div >
+    <input id="tmp" value="" name="applicanttmp" hidden="true">
+  </div>
+
+
+
+<!-- reason block -->
+  <div class="row">
+    <div class="col-25">
+      <b><label for="Reason">Reason</label></b>
+    </div>
+    <div class="col-75">
+    <div class="col-45">
+      <textarea id="Reanson" name="reason" placeholder="Reason...." style="height:100px"></textarea>
+    </div>
+  </div>
+  </div>
+  <br>
+
+<!-- Button submit-->
+  <div class="row">
+    <div class="col-25"></div>
+    <div class=col-75>
+      <div >
+      <input id="btnSubmit" type="submit" class="col-45btn"  >
+  </div>
+  </div>
+  </div>
+
+  <div class="row"  > 
+    <div class="col-25"></div>
+    <div class="col-75">
+    <div class="col-45" style="text-align: center;"> 
+      Yang Ming Shipping (Vietnam) Co., LTD   
+    </div>   
+  </div>
+</div>
+
+
+  </form>
+</div>
+<div class="col-1"></div>
+</div>
+</div>
+
+
+
+
+
+ 
+
+
+<script>
+    // validate form before insert
+    function functionCheckError(){  
+        try{    
+        // xu ly logic phan trung ten applicant vs acting person
+        var b= document.getElementById("Applicant");
+       var b2= b.options[b.selectedIndex].text;
+        var a= document.getElementById("Acting Person").value;        
+        if(a==b2){    
+            alert("Applicant and Acting Person must different!");
+            window.location.reload();
+           return false;
+        }
+        if(a=="Select"){
+            alert("Acting Person Empty!");
+            window.location.reload();
+            return false;
+        }
+                   
+        //if(document.getElementById("kindOfLeaveGetValue").value=='al'||document.getElementById("kindOfLeaveGetValue").value=='ul'){}
+        let _daysValue = Number.parseFloat(document.getElementById("_DayorHourValue").value);
+        let _daysRemainValue = Number.parseFloat(document.getElementById("dayremainvalue").value);
+       
+        console.log(_daysValue);
+        console.log("day remain:"+_daysRemainValue);
+        const _bday = (document.getElementById("Beginning Date").value);        
+        const bday= new Date(_bday);
+        const _eday =(document.getElementById("Ending Date").value);        
+        const eday=new Date(_eday);
+        const D = new Date();
+
+        
+        const _nowday=( D.getFullYear()+'-' +(D.getMonth()+1) +'-'+ D.getDate('DD'));
+        const nowday =new Date(_nowday);
+      
+
+        var dtime = document.getElementById("_DayorHourValue");
+        //check empty inbox in form insert
+        if(!_bday||!_eday||!document.getElementById("Time Range").value||!document.getElementById("Reanson").value||!document.getElementById("_DayorHourValue")){
+           
+           console.log(document.getElementById("Time Range").value);
+           console.log(document.getElementById("Reanson").value);
+           console.log(document.getElementById("_DayorHourValue").value);
+
+
+            alert("Form is Empty!");
+            window.location.reload();
+            return false;
+        }
+        if(_daysValue>_daysRemainValue||_daysRemainValue==0){
+            alert("Not Enough Days To Submit");  
+            window.location.reload();         
+            return false;
+        }
+
+        if((bday>eday)|| (bday<nowday)){
+            alert("Day of leave wrong!");
+            window.location.reload();
+            return false;
+        }
+        if(document.getElementById("kindOfLeaveGetValue").value=='Select'){
+            alert("Kind Of Leave error!");
+            window.location.reload();
+            return false;
+        }
+        if(dtime.value==''||dtime.value==null){
+            alert("Time Error");
+            window.location.reload();
+            return false;
+        }
+        if(isNaN(bday)||isNaN(eday)){
+            alert("Day of leave is empty!");
+            window.location.reload();
+            return false;
+        }
+       
+    //    const tmpv = document.getElementById("tmp");
+    //    tmpv.value=b2;
+     
+        const select = document.getElementById('Acting Person');
+        select.disabled=false;
+
+
+    }catch(err){
+        console.log("check validate form AddNewLeave: "+err)
+    }
+
+    }
+</script>
+
+
+</body>
+
+</html>
+
+

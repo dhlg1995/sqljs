@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+  <ul class="navbar navbar-expand-lg bg-light" style="background-color: rgb(231, 217, 217);">   
+      <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/main"> HOME</a></li>
+      <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/OT/formNewOT">ADD</a></li>
+      <li class="nav-link active"> <a style="font-weight: bold;" class="active" href="/"> SIGN OUT </a></li>
+  </ul>
+ 
+
+  <table class="table-hover table-dark table">
+    <tr>
+    <th>Action</th>
+    <th>Refno</th>
+    <th>Action</th>  
+    <th>Date</th>
+    <th>Description</th>
+    <th>Hours</th>
+    <th>Action</th> 
+    </tr>
+
+    <% for(let i=0;i < data.length;i++){ %>
+      <tr>
+        <td>
+           <button class="handleOT"><Details></Details></button>
+        </td>
+        <td class="refno">
+            <%=data[i].refno%>
+        </td>
+        <td><button class="handleOTRequest">
+            Request
+          </button>
+        </td>
+        <td>
+          <%= data[i].dodate%>
+        </td>       
+        <td>
+          <%=data[i].desp%>
+        </td>
+        <td>
+            <%=data[i].hours%>
+        </td>
+        <td><button class="handleOTDelete">
+            Delete
+          </button>         
+        </td>
+      </tr>
+      <% } %>
+
+  </table>
+  <script>
+    $(".handleOTRequest").click(async function(){
+          var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+                         .find(".refno")     // Gets a descendent with class="nr"
+                         .text(); 
+          console.log($item);
+          $item = $item.replaceAll('/','%2F');    
+               
+          window.location.href=`/OT/Request/${$item}`;
+  
+      })
+      $(".handleOTDelete").click(async function(){
+          var $item = $(this).closest("tr")   // Finds the closest row <tr> 
+                         .find(".refno")     // Gets a descendent with class="nr"
+                         .text(); 
+          console.log($item);
+          $item = $item.replaceAll('/','%2F');    
+               
+          window.location.href=`/OTConfirm/Delete/${$item}`;
+  
+      })
+      
+    </script>
+  
+</body>
+
+</html>
+
+

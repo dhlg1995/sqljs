@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Success!</h2>
+<input hidden ="true" id="tmp" value="<%=tmpstring%>">
+<button onclick="myFunction()">Back</button>
+
+<script>
+    var _tmp = document.getElementById("tmp");
+    function myFunction() {
+    if(_tmp.value=='lr') window.location.href="/leave/<%=userid%>";
+    if(_tmp.value=='ot') window.location.href="/OT/<%=userid%>"
+}
+</script>
+
+</body>
+</html>

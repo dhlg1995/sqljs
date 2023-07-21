@@ -1,13 +1,18 @@
-const http = require('http');
 
-const server = http.createServer((req, res) => {
-    console.log('run request ...')
-    res.setHeader('Content-Type', 'text/html');
-    res.write('<h3>Hello world! </h3>');
-    res.write('<h2>from ERIC & HOI DAN IT </h2>');
-    res.end();
-})
+let app = require('crypto-js');
+let key ='1234shg@#%9825njhgASKZM__#';
+let text='123'
 
-server.listen(3000, 'localhost', () => {
-    console.log('Node.JS server is running on port: 3000');
-})
+
+
+
+
+
+ let encrypted = app.AES.encrypt(text,key).toString();
+
+let dec = app.AES.decrypt(encrypted,key);
+
+var originalText = dec.toString(app.enc.Utf8);
+console.log(encrypted);
+console.log(dec);
+console.log(originalText);
