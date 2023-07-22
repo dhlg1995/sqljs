@@ -404,7 +404,23 @@ app.get('/OTConfirmAll/:user',async function(req,res){
 })
 
 
+app.get('/testAJAXtest',async (req,res)=>{
+    console.log("inside testAJASX");
+    await sql.connect(config);
+    let a = await sql.query(`select top 20 * from T_ChS order by refno desc`);
+    let data = [];
+    data = await a.recordsets[0].map((row) => {
+         data.push({
+            refno: row.refno,
+            vendorid:row.vendorid,
+            item:row.item,
+            keydate:row.keydate           
+        })
+    });
+    await res.send(data);
+    return await data;
 
+})
 
 app.get('/main',(req,res)=>{
     res.render('formMain.ejs',{ data: credentialId, T_reg: _reg })

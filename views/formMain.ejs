@@ -9,16 +9,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <style type="text/css">
+    <!-- <style type="text/css">
         <!--
         -->
-        img
+        <!-- img
         {
         filter:
         brightness(60%);
-        }
-    </style>
-    <style>
+        } -->
+    <!-- </style> -->
+    <!-- <style>
         table {
           font-family: arial, sans-serif;
           border-collapse: collapse;
@@ -125,10 +125,12 @@ li a:hover {
     margin-top: 0;
   }
 }
-        </style>
+        </style> --> -->
 </head>
 
 <body>
+  <div class="row">
+  <div class="col-3">
     <ul>
         <li > <a class="active" href="/main">HOME</a></li>
         <li > <a class="active" href="/">SIGN OUT</a></li>
@@ -184,8 +186,14 @@ li a:hover {
                 <input type="submit">
             </form>
         </div>
-    
-       
+      </div>
+  <div class="col-7">
+    <div id="chs">
+
+    </div>
+  </div>
+  
+  </div>
 
         <script>
             var _role = Number.parseInt(`<%=T_reg.role%>`);
@@ -268,14 +276,31 @@ li a:hover {
 
                     }
                     if(_tmpRoleForm==5){
-                      window.location.href=`/leave/${user}`; 
+                      window.location.href=`/Order/${user}`; 
                       
                     }
                     if(_tmpRoleForm==4){
-                      window.location.href=`/leave/${user}`; 
+                      window.location.href=`/Order/${user}`; 
                       
                     }
-                }
+                    break;
+                    case 4:
+                      break;
+                    case 5:
+                      break;
+                    case 6:{
+                      console.log("inside");
+                      var xhttp = new XMLHttpRequest();
+                      xhttp.open("GET","http://localhost.com/testAJAXtest",true)                    
+                      xhttp.onload=function(){
+                        console.log("inside onload");
+                        document.getElementById("chs").innerHTML=this.responseText
+                      }
+                      xhttp.send();
+                      if(xhttp.responseText != null) Console.log("! null");
+                    break;
+                    }
+                  }
             }
         </script>
         
